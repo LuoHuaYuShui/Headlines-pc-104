@@ -3,13 +3,48 @@
     <!-- el-card 是组件 解析后并不存在 el-card标签 -->
     <el-card>
       <img src="../../assets/logo_index.png" alt />
+      <!-- 表单 -->
+      <el-form>
+        <el-form-item>
+          <!-- 双向数据绑定之后 才可以输入数据 -->
+          <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+        <!-- 验证码 -->
+        <el-form-item>
+          <el-input
+            style="width:240px;margin-right:8px"
+            v-model="loginForm.code"
+            placeholder="请输入验证码"
+          ></el-input>
+          <el-button>发送验证码</el-button>
+        </el-form-item>
+        <!-- 默认选中 -->
+        <el-form-item>
+          <!-- :value="true" 复选框默认选中，且不能修改 -->
+          <el-checkbox :value="true">我已阅读并同意用户协议和隐私条款</el-checkbox>
+        </el-form-item>
+        <!-- 按钮 -->
+        <el-form-item>
+          <el-button style="width:100%" type="primary">登录</el-button>
+        </el-form-item>
+      </el-form>
     </el-card>
   </div>
 </template>
 
 <script>
 export default {
-  name: "page-login"
+  name: "page-login",
+  data() {
+    return {
+      // 表单数据对象
+      loginForm: {
+        // mobile 和 code 是固定的，后台需要的字段名称
+        mobile: "",
+        code: ""
+      }
+    };
+  }
 };
 </script>
 
