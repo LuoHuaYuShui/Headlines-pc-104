@@ -4,13 +4,13 @@
     <el-card>
       <img src="../../assets/logo_index.png" alt />
       <!-- 表单 -->
-      <el-form>
-        <el-form-item>
+      <el-form :model="loginForm" :rules="loginRules">
+        <el-form-item prop="mobile">
           <!-- 双向数据绑定之后 才可以输入数据 -->
           <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <!-- 验证码 -->
-        <el-form-item>
+        <el-form-item prop="code">
           <el-input
             style="width:240px;margin-right:8px"
             v-model="loginForm.code"
@@ -42,6 +42,14 @@ export default {
         // mobile 和 code 是固定的，后台需要的字段名称
         mobile: "",
         code: ""
+      },
+      // 校验规则对象
+      loginRules: {
+        mobile: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+        code: [
+          { required: true, message: "请输入验证码", trigger: "blur" },
+          { len: 6, message: "验证码格式不正确", trigger: "blur" }
+        ]
       }
     };
   }
