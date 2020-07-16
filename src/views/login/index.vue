@@ -4,7 +4,7 @@
     <el-card>
       <img src="../../assets/logo_index.png" alt />
       <!-- 表单 -->
-      <el-form :model="loginForm" :rules="loginRules">
+      <el-form :model="loginForm" :rules="loginRules" ref="loginForm">
         <el-form-item prop="mobile">
           <!-- 双向数据绑定之后 才可以输入数据 -->
           <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
@@ -25,7 +25,7 @@
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item>
-          <el-button style="width:100%" type="primary">登录</el-button>
+          <el-button style="width:100%" type="primary" @click="login()">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -36,17 +36,17 @@
 export default {
   name: "page-login",
   data() {
-     // 自定义校验函数
-    const checkMobile = (rule,value,callback) => {
+    // 自定义校验函数
+    const checkMobile = (rule, value, callback) => {
       // value 是待校验的数据
       // callback 校验完毕后调用的回调函数
       // 手机号规则：必须1开头，第二位是3-9之间，9个数字结尾
       if (/^1[3-9]\d{9}$/.test(value)) {
-        callback()
+        callback();
       } else {
-        callback(new Error('手机号不正确'));
+        callback(new Error("手机号不正确"));
       }
-    },
+    };
     return {
       // 表单数据对象
       loginForm: {
@@ -56,16 +56,42 @@ export default {
       },
       // 校验规则对象
       loginRules: {
-        mobile: [{ required: true, message: "请输入手机号", trigger: "blur" },  
+        mobile: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
           // 需要自定义手机号的校验规则
-+          {validator: checkMobile, trigger: 'blur'}
-      ],
+          +{ validator: checkMobile, trigger: "blur" }
+        ],
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
           { len: 6, message: "验证码格式不正确", trigger: "blur" }
         ]
       }
     };
+  },
+  methods: {
+    login() {
+      // 整体表单校验
+      this.$refs.loginForm.validate(valid => {
+        // valid代表是否整体校验成功
+        if (valid) {
+          // 进行登录
+          this.$http
+            .post(
+              "http://ttapi.research.itcast.cn/mp/v1_0/authorizations",
+              this.loginForm
+            )
+            .then(res => {
+              // res.data 获取后台返回的所有数据
+              this.$router.push("/");
+            })
+            .catch(e => {
+              // 失败提示  手机号或验证码错误（ElementUI 自带的语法）
+              //  console.log("登录失败");
+              this.$message.error("手机号或验证码错误");
+            });
+        }
+      });
+    }
   }
 };
 </script>

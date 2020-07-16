@@ -6,13 +6,17 @@ import VueRouter from 'vue-router'
 
 // 导入组件
 import login from '@/views/login'
+import Layout from '@/views/Layout'
 
 Vue.use(VueRouter);
 
 // 初始化路由
 // 定义路由规则
 const routes = [
-    { path: '/login', component: login }
+    // 登录
+    { path: '/login', component: login },
+    // 首页框架
+    { path: '/', component: Layout }
 ];
 const router = new VueRouter({ routes });
 
