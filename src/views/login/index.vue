@@ -36,6 +36,17 @@
 export default {
   name: "page-login",
   data() {
+     // 自定义校验函数
+    const checkMobile = (rule,value,callback) => {
+      // value 是待校验的数据
+      // callback 校验完毕后调用的回调函数
+      // 手机号规则：必须1开头，第二位是3-9之间，9个数字结尾
+      if (/^1[3-9]\d{9}$/.test(value)) {
+        callback()
+      } else {
+        callback(new Error('手机号不正确'));
+      }
+    },
     return {
       // 表单数据对象
       loginForm: {
@@ -45,7 +56,10 @@ export default {
       },
       // 校验规则对象
       loginRules: {
-        mobile: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+        mobile: [{ required: true, message: "请输入手机号", trigger: "blur" },  
+          // 需要自定义手机号的校验规则
++          {validator: checkMobile, trigger: 'blur'}
+      ],
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
           { len: 6, message: "验证码格式不正确", trigger: "blur" }
