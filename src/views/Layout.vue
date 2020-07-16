@@ -1,12 +1,16 @@
 <template>
   <el-container class="conatiner-layout">
-    <el-aside width="200px">
+    <!-- 动态绑定属性 （可以写JS表达式） -->
+    <el-aside :width="isOpen?'200px':'64px'">
       <!-- logo区域 -->
-      <div class="logo"></div>
+      <div class="logo" :class="{'mini_logo':!isOpen}"></div>
       <!-- 导航菜单 -->
       <!-- default-active="2" 设置默认激活的菜单项 -->
+      <!--  :collapse="!isOpen" 动态设置侧边栏展开状态 -->
       <el-menu
         style="border-right:none"
+        :collapse="!isOpen"
+        :collapse-transition="false"
         default-active="1"
         class="el-menu-vertical-demo"
         background-color="#002233"
@@ -54,8 +58,12 @@
     </el-aside>
     <el-container>
       <el-header>
-        <!-- 图标 -->
-        <span class="el-icon-s-fold icon"></span>
+        <!-- 图标 (注意点：图标 根据 动态类名 切换)-->
+        <span
+          @click="isOpen=!isOpen"
+          class="icon"
+          :class="{'el-icon-s-fold':isOpen,'el-icon-s-unfold':!isOpen}"
+        ></span>
         <!-- 文字 -->
         <span class="text">智科云达科技有限公司</span>
         <!-- 下拉菜单 -->
@@ -84,7 +92,13 @@
 
 <script>
 export default {
-  name: "layout"
+  name: "layout",
+  data() {
+    return {
+      // 控制侧边栏展开收起（默认展开）
+      isOpen: true
+    };
+  }
 };
 </script>
 
@@ -102,6 +116,11 @@ export default {
       height: 60px;
       background-color: #002244;
       background: url("../assets/logo_admin.png") no-repeat center / 140px auto;
+    }
+    // 小logo 样式 必须放在大logo 下方写
+    .mini_logo {
+      background-image: url("../assets/logo_admin_01.png");
+      background-size: 36px auto;
     }
   }
   .el-header {
