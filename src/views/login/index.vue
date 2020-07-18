@@ -51,8 +51,8 @@ export default {
       // 表单数据对象
       loginForm: {
         // mobile 和 code 是固定的，后台需要的字段名称
-        mobile: "",
-        code: ""
+        mobile: "13911111111",
+        code: "246810"
       },
       // 校验规则对象
       loginRules: {
