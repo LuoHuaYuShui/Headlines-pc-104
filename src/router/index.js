@@ -9,6 +9,7 @@ import auth from '@/utils/auth'
 import login from '@/views/login'
 import Layout from '@/views/Layout'
 import Welcome from '@/views/welcome'
+import NotFound from '@/views/404'
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,8 @@ const routes = [
             }
         ]
     },
+    // 通配规则，404组件
+    { path: '*', component: NotFound }
 ];
 const router = new VueRouter({ routes });
 
