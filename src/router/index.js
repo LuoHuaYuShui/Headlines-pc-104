@@ -3,6 +3,7 @@
 import Vue from 'vue'
 // 依赖路由
 import VueRouter from 'vue-router'
+import auth from '@/utils/auth'
 
 // 导入组件
 import login from '@/views/login'
@@ -30,4 +31,15 @@ const routes = [
 ];
 const router = new VueRouter({ routes });
 
+// 导航守卫
+router.beforeEach((to, from, next) => {
+    // to 即将跳转的路由对象
+    // from 正在离开的路由对象
+    // next('地址') 下一步，放行
+    const user = auth.getUser();
+    // 不是 访问登录 且没有token 信息,不能访问其他页面,拦截登录
+    if (to.path !== '/login' && !user.token) return next('/login');
+    // 其他情况一概放行
+    next();
+});
 export default router

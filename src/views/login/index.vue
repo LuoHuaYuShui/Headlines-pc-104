@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import auth from "@/utils/auth";
+
 export default {
   name: "page-login",
   data() {
@@ -82,6 +84,9 @@ export default {
             )
             .then(res => {
               // res.data 获取后台返回的所有数据
+              // 成功：保存用户信息
+              auth.setUser(res.data.data);
+              // 成功：跳转首页
               this.$router.push("/");
             })
             .catch(e => {
