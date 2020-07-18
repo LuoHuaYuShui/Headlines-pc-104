@@ -67,18 +67,22 @@
         <!-- 文字 -->
         <span class="text">智科云达科技有限公司</span>
         <!-- 下拉菜单 -->
-        <el-dropdown>
+        <el-dropdown @command="clickItem">
           <!-- 默认显示 -->
           <span>
             <!-- 头像 和 用户名 -->
-            <img src="../assets/avatar.jpg" class="head" alt />
-            <span class="name">一条龙为您服务</span>
+            <img :src="user.photo" class="head" alt />
+            <span class="name">{{user.name}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <!-- 下拉选项 -->
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <!-- 原因:click事件没触发,组件 不支持 click -->
+            <!-- 思路: 把click 的事件绑定在组件最终解析的DOM标签上，这样肯定支持 -->
+            <!-- 实现: 在事件后加上事件修饰符 .native 给组件标签绑定原生事件-->
+            <!-- @click.native="setting()" @click.native="logout()"  -->
+            <el-dropdown-item command="setting" icon="el-icon-setting">个人设置</el-dropdown-item>
+            <el-dropdown-item command="logout" icon="el-icon-unlock">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -91,13 +95,40 @@
 </template>
 
 <script>
+import auth from "@/utils/auth";
 export default {
   name: "layout",
   data() {
     return {
       // 控制侧边栏展开收起（默认展开）
-      isOpen: true
+      isOpen: true,
+      // 用户名字 头像
+      user: {
+        name: "",
+        photo: ""
+      }
     };
+  },
+  created() {
+    const { name, photo } = auth.getUser();
+    this.user = { name, photo };
+  },
+  methods: {
+    setting() {
+      this.$router.push("/setting");
+    },
+    logout() {
+      // 1. 清除用户信息
+      auth.delUser();
+      // 2. 跳转登录页面
+      this.$router.push("/login");
+    },
+    // 点击任何一个下拉选项触发的函数
+    // 注意：绑定该函数的时候不能带括号，需要接受默认的传参
+    clickItem(command) {
+      // command 是点击选项上 command属性的值
+      this[command]();
+    }
   }
 };
 </script>
