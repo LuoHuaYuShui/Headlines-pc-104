@@ -8,10 +8,11 @@
       <!-- default-active="2" 设置默认激活的菜单项 -->
       <!--  :collapse="!isOpen" 动态设置侧边栏展开状态 -->
       <el-menu
+        router
         style="border-right:none"
         :collapse="!isOpen"
         :collapse-transition="false"
-        default-active="1"
+        :default-active="$route.path"
         class="el-menu-vertical-demo"
         background-color="#002233"
         text-color="#fff"
@@ -19,37 +20,37 @@
       >
         <!-- el-submenu 当有子菜单时使用该组件 -->
         <!-- el-menu-item  当没有子菜单使用该组件 -->
-        <el-menu-item index="1">
+        <el-menu-item index="/">
           <!-- 设置图标 -->
           <i class="el-icon-s-home"></i>
           <span slot="title">首页</span>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="/article">
           <!-- 设置图标 -->
           <i class="el-icon-document"></i>
           <span slot="title">内容管理</span>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="/image">
           <!-- 设置图标 -->
           <i class="el-icon-picture"></i>
           <span slot="title">素材管理</span>
         </el-menu-item>
-        <el-menu-item index="4">
+        <el-menu-item index="/publish">
           <!-- 设置图标 -->
           <i class="el-icon-s-promotion"></i>
           <span slot="title">发布文章</span>
         </el-menu-item>
-        <el-menu-item index="5">
+        <el-menu-item index="/comment">
           <!-- 设置图标 -->
           <i class="el-icon-chat-dot-round"></i>
           <span slot="title">评论管理</span>
         </el-menu-item>
-        <el-menu-item index="6">
+        <el-menu-item index="/fans">
           <!-- 设置图标 -->
           <i class="el-icon-present"></i>
           <span slot="title">粉丝管理</span>
         </el-menu-item>
-        <el-menu-item index="7">
+        <el-menu-item index="/setting">
           <!-- 设置图标 -->
           <i class="el-icon-setting"></i>
           <span slot="title">个人设置</span>

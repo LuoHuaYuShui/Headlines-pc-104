@@ -10,6 +10,7 @@ import login from '@/views/login'
 import Layout from '@/views/Layout'
 import Welcome from '@/views/welcome'
 import NotFound from '@/views/404'
+import Article from '@/views/article'
 
 Vue.use(VueRouter);
 
@@ -26,7 +27,9 @@ const routes = [
             // 欢迎页面
             {
                 path: '/', component: Welcome
-            }
+            },
+            // 内容管理
+            { path: '/article', component: Article }
         ]
     },
     // 通配规则，404组件
