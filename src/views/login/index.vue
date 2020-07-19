@@ -78,10 +78,7 @@ export default {
         if (valid) {
           // 进行登录
           this.$http
-            .post(
-              "http://ttapi.research.itcast.cn/mp/v1_0/authorizations",
-              this.loginForm
-            )
+            .post("/authorizations", this.loginForm)
             .then(res => {
               // res.data 获取后台返回的所有数据
               // 成功：保存用户信息

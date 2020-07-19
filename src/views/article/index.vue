@@ -4,7 +4,20 @@
 
 <script>
 export default {
-  name: "page-article"
+  // 组件名称 不能和 原生标签 重名
+  name: "page-article",
+  // 测试
+  created() {
+    // 发送获取当前登录用户的文章
+    this.$http
+      .get("/articles")
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
 };
 </script>
 
