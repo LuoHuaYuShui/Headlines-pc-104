@@ -4,10 +4,8 @@
     <el-card>
       <!-- 头部 -->
       <div slot="header">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>内容管理</el-breadcrumb-item>
-        </el-breadcrumb>
+        <!-- 封装组件实现 -->
+        <my-bread>内容管理</my-bread>
       </div>
       <!-- 内容 -->
       <el-form label-width="80px" size="small">
@@ -45,21 +43,13 @@
       </el-form>
     </el-card>
     <!-- 结果区域 -->
-
-    <!-- 测试代码 使用test-slot组件 -->
-    <!-- <test-slot> -->
-    <!-- data 变量名，代表插槽上绑定的所有自定义属性数据 -->
-    <!-- scoped 代表插槽作用域数据 -->
-    <!-- <div slot="con" slot-scoped="scope">内容{{scope.message}}</div> -->
-    <!-- <div slot="foo">底部</div> -->
-    <!-- </test-slot> -->
   </div>
 </template>
 
 <script>
-// import TestSlot from "@/component/test-slot";
+import MyBread from "@/components/my-bread";
 export default {
-  components: { TestSlot },
+  components: { MyBread },
   // 组件名称 不能和 原生标签 重名
   name: "page-article",
   // 测试
