@@ -1,6 +1,7 @@
 // axios的配置，并导出配置好的axios
 import axios from 'axios'
 import auth from '@/utils/auth'
+import router from '@/router'
 
 // 进行axios的配置
 // 1.基准地址配置
@@ -16,5 +17,16 @@ axios.interceptors.request.use(config => {
     return config;
 }, error => Promise.reject(error));
 
+// 响应拦截器
+axios.interceptors.response.use(res => res, err => {
+    // 判断响应状态码是401，清除本地的用户信息，跳转至登录页面
+    if (err.response && err.response.status === 401) {
+        auth.delUser();
+        // $router 是初始化的 router 实例（src/router/index.js导出的就是）
+        router.push('/login');
+
+    }
+    return Promise.reject(err);
+});
 
 export default axios
