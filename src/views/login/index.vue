@@ -73,24 +73,39 @@ export default {
   methods: {
     login() {
       // 整体表单校验
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async valid => {
         // valid代表是否整体校验成功
         if (valid) {
           // 进行登录
-          this.$http
-            .post("/authorizations", this.loginForm)
-            .then(res => {
-              // res.data 获取后台返回的所有数据
-              // 成功：保存用户信息
-              auth.setUser(res.data.data);
-              // 成功：跳转首页
-              this.$router.push("/");
-            })
-            .catch(e => {
-              // 失败提示  手机号或验证码错误（ElementUI 自带的语法）
-              //  console.log("登录失败");
-              this.$message.error("手机号或验证码错误");
-            });
+          // this.$http
+          //   .post("/authorizations", this.loginForm)
+          //   .then(res => {
+          //     // res.data 获取后台返回的所有数据
+          //     // 成功：保存用户信息
+          //     auth.setUser(res.data.data);
+          //     // 成功：跳转首页
+          //     this.$router.push("/");
+          //   })
+          //   .catch(e => {
+          //     // 失败提示  手机号或验证码错误（ElementUI 自带的语法）
+          //     //  console.log("登录失败");
+          //     this.$message.error("手机号或验证码错误");
+          //   });
+          // ===============================================================
+          // 当某段代码可能会出现报错 或 异常，捕获这段代码的异常，进行异常处理
+          // 语法：try{ 可能报错的代码片段 }catch(e){ 对异常进行处理代码 } 异常捕获和异常处理
+          try {
+            // 理想情况
+            const res = await this.$http.post(
+              "/authorizations",
+              this.loginForm
+            );
+            auth.setUser(res.data.data);
+            this.$router.push("/");
+          } catch (e) {
+            // try 中的代码出现异常会执行catch
+            this.$message.error("手机号或验证码错误");
+          }
         }
       });
     }
