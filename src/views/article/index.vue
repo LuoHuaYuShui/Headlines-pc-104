@@ -45,11 +45,21 @@
       </el-form>
     </el-card>
     <!-- 结果区域 -->
+
+    <!-- 测试代码 使用test-slot组件 -->
+    <!-- <test-slot> -->
+    <!-- data 变量名，代表插槽上绑定的所有自定义属性数据 -->
+    <!-- scoped 代表插槽作用域数据 -->
+    <!-- <div slot="con" slot-scoped="scope">内容{{scope.message}}</div> -->
+    <!-- <div slot="foo">底部</div> -->
+    <!-- </test-slot> -->
   </div>
 </template>
 
 <script>
+// import TestSlot from "@/component/test-slot";
 export default {
+  components: { TestSlot },
   // 组件名称 不能和 原生标签 重名
   name: "page-article",
   // 测试
