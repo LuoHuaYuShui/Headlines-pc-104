@@ -43,6 +43,20 @@
       </el-form>
     </el-card>
     <!-- 结果区域 -->
+    <el-card style="margin-top:20px">
+      <div slot="header">根据筛选条件共查询到 51243 条结果：</div>
+      <!-- 表格 data绑定数组数据-->
+      <el-table :data="articles">
+        <!-- 列容器 -->
+        <el-table-column label="封面"></el-table-column>
+        <el-table-column label="标题"></el-table-column>
+        <el-table-column label="状态"></el-table-column>
+        <el-table-column label="发布时间"></el-table-column>
+        <el-table-column label="操作"></el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <el-pagination style="margin-top:20px" background layout="prev, pager, next" :total="1000"></el-pagination>
+    </el-card>
   </div>
 </template>
 
@@ -75,7 +89,9 @@ export default {
         end_pubdate: null
       },
       // 支持日期范围组件的数据（当选择日期范围后分别给 begin 和 end日期赋值）
-      dateArr: []
+      dateArr: [],
+      // 文章数组
+      articles: []
     };
   }
 };
