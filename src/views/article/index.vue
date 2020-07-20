@@ -47,9 +47,7 @@
 </template>
 
 <script>
-import MyBread from "@/components/my-bread";
 export default {
-  components: { MyBread },
   // 组件名称 不能和 原生标签 重名
   name: "page-article",
   // 测试

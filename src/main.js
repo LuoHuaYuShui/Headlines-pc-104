@@ -8,11 +8,17 @@ import router from '@/router'
 
 // 导入自己配置的axios,并挂载
 import axios from '@/api'
+
+// 导入自己的插件
+import myPlugin from '@/utils/plugin'
+Vue.use(myPlugin);
+
 Vue.prototype.$http = axios
 
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false
+
 
 new Vue({
   el: '#app',
