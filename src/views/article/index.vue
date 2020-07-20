@@ -23,8 +23,12 @@
         <el-form-item label="频道">
           <!-- 下拉框 -->
           <el-select v-model="reqParams.channel_id" placeholder="请选择">
-            <el-option label="前端" :value="104"></el-option>
-            <el-option label="Java" :value="108"></el-option>
+            <el-option
+              v-for="item in channelOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="日期">
@@ -64,18 +68,6 @@
 export default {
   // 组件名称 不能和 原生标签 重名
   name: "page-article",
-  // 测试
-  // created() {
-  //   // 发送获取当前登录用户的文章
-  //   this.$http
-  //     .get("/articles")
-  //     .then(res => {
-  //       console.log(res.data);
-  //     })
-  //     .catch(e => {
-  //       console.log(e);
-  //     });
-  // }
   data() {
     return {
       // 筛选条件对象（发给后台的参数，保证和后台要求的字段一致）
@@ -91,8 +83,21 @@ export default {
       // 支持日期范围组件的数据（当选择日期范围后分别给 begin 和 end日期赋值）
       dateArr: [],
       // 文章数组
-      articles: []
+      articles: [],
+      // 频道选项
+      channelOptions: []
     };
+  },
+  created() {
+    this.getChannelOptions();
+  },
+  methods: {
+    // 获取频道数据（行为方法）
+    async getChannelOptions() {
+      const res = await this.$http.get("channels");
+      //console.log(res);
+      this.channelOptions = res.data.data.channels;
+    }
   }
 };
 </script>
