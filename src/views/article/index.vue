@@ -53,9 +53,9 @@
       <el-table :data="articles">
         <!-- 列容器 -->
         <el-table-column label="封面"></el-table-column>
-        <el-table-column label="标题"></el-table-column>
+        <el-table-column label="标题" prop="title"></el-table-column>
         <el-table-column label="状态"></el-table-column>
-        <el-table-column label="发布时间"></el-table-column>
+        <el-table-column label="发布时间" prop="pubdate"></el-table-column>
         <el-table-column label="操作"></el-table-column>
       </el-table>
       <!-- 分页 -->
@@ -78,7 +78,11 @@ export default {
         channel_id: null,
         // 日期范围 (开始 和 结束)
         begin_pubdate: null,
-        end_pubdate: null
+        end_pubdate: null,
+        // 当前请求数据的 页码
+        page: 1,
+        // 每页条数
+        per_page: 20
       },
       // 支持日期范围组件的数据（当选择日期范围后分别给 begin 和 end日期赋值）
       dateArr: [],
@@ -90,6 +94,7 @@ export default {
   },
   created() {
     this.getChannelOptions();
+    this.getArticles();
   },
   methods: {
     // 获取频道数据（行为方法）
@@ -97,6 +102,12 @@ export default {
       const res = await this.$http.get("channels");
       //console.log(res);
       this.channelOptions = res.data.data.channels;
+    },
+    // 获取文章数据
+    async getArticles() {
+      // get的传参方式：params: this.reqParams  筛选条件传给后台，根据条件拿数据
+      const res = await this.$http.get("articles", { params: this.reqParams });
+      this.articles = res.data.data.results;
     }
   }
 };
