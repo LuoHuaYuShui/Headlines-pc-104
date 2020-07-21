@@ -22,7 +22,12 @@
         </el-form-item>
         <el-form-item label="频道">
           <!-- 下拉框 -->
-          <el-select v-model="reqParams.channel_id" placeholder="请选择">
+          <el-select
+            @change="changeChannel"
+            clearable
+            v-model="reqParams.channel_id"
+            placeholder="请选择"
+          >
             <el-option
               v-for="item in channelOptions"
               :key="item.id"
@@ -34,6 +39,8 @@
         <el-form-item label="日期">
           <!-- 组件产生两个数据：用 数组 收集数据，[开始日期，结束日期] -->
           <el-date-picker
+            @change="changeDate"
+            value-format="yyyy-MM-dd"
             v-model="dateArr"
             type="daterange"
             range-separator="至"
@@ -42,7 +49,7 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">筛选</el-button>
+          <el-button type="primary" @click="search()">筛选</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -131,6 +138,33 @@ export default {
     this.getArticles();
   },
   methods: {
+    // 选择频道
+    changeChannel(val) {
+      // 如果清空，val 是""字符串，应该设置为 null
+      if (val === "") this.reqParams.channel_id = null;
+    },
+    // 选择日期
+    changeDate(arr) {
+      // arr 是数组 [起始日期,结束日期]
+      /* 
+         注意：后台需要的日期格式是 2020-07-20
+         组件：支持日期格式设置
+         注意：清空日期时，也会触发该函数，arr数据是null
+      */
+      if (arr) {
+        this.reqParams.begin_pubdate = arr[0];
+        this.reqParams.end_pubdate = arr[1];
+      } else {
+        this.reqParams.begin_pubdate = null;
+        this.reqParams.end_pubdate = null;
+      }
+    },
+    // 筛选函数 （删除状态查询 后台不支持）
+    search() {
+      this.reqParams.page = 1;
+      // 重新查询
+      this.getArticles();
+    },
     // 切换分页（触发时 传入最新改变后的页码）
     changePage(newPage) {
       this.reqParams.page = newPage;
