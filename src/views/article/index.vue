@@ -48,7 +48,7 @@
     </el-card>
     <!-- 结果区域 -->
     <el-card style="margin-top:20px">
-      <div slot="header">根据筛选条件共查询到 51243 条结果：</div>
+      <div slot="header">根据筛选条件共查询到 {{total}} 条结果：</div>
       <!-- 表格 data绑定数组数据-->
       <el-table :data="articles">
         <!-- 列容器 -->
@@ -83,7 +83,15 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-pagination style="margin-top:20px" background layout="prev, pager, next" :total="1000"></el-pagination>
+      <el-pagination
+        style="margin-top:20px"
+        :page-size="reqParams.per_page"
+        :current-page="reqParams.page"
+        @current-change="changePage"
+        background
+        layout="prev, pager, next"
+        :total="total"
+      ></el-pagination>
     </el-card>
   </div>
 </template>
@@ -113,7 +121,9 @@ export default {
       // 文章数组
       articles: [],
       // 频道选项
-      channelOptions: []
+      channelOptions: [],
+      // 总条数
+      total: 0
     };
   },
   created() {
@@ -121,6 +131,11 @@ export default {
     this.getArticles();
   },
   methods: {
+    // 切换分页（触发时 传入最新改变后的页码）
+    changePage(newPage) {
+      this.reqParams.page = newPage;
+      this.getArticles();
+    },
     // 获取频道数据（行为方法）
     async getChannelOptions() {
       const res = await this.$http.get("channels");
@@ -132,6 +147,8 @@ export default {
       // get的传参方式：params: this.reqParams  筛选条件传给后台，根据条件拿数据
       const res = await this.$http.get("articles", { params: this.reqParams });
       this.articles = res.data.data.results;
+      // 总条数
+      this.total = res.data.data.total_count;
     }
   }
 };
