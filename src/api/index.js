@@ -2,12 +2,18 @@
 import axios from 'axios'
 import auth from '@/utils/auth'
 import router from '@/router'
+import JSONbig from 'json-bigint'
 
 // 进行axios的配置
 // 1.基准地址配置
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 // 2.请求头配置
 // axios.defaults.headers.Authorization = `Bearer ${auth.getUser().token}`
+// 3.改json转换方式
+axios.defaults.transformResponse = [data => {
+    // 通过json-bigint对data进行处理
+    return JSONbig.parse(data);
+}]
 
 // 添加请求拦截器
 axios.interceptors.request.use(config => {
