@@ -12,7 +12,11 @@ axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 // 3.改json转换方式
 axios.defaults.transformResponse = [data => {
     // 通过json-bigint对data进行处理
-    return JSONbig.parse(data);
+    try {
+        return JSONbig.parse(data);
+    } catch (e) {
+        return data
+    }
 }]
 
 // 添加请求拦截器

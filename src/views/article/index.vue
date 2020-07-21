@@ -91,7 +91,13 @@
               circle
               plain
             ></el-button>
-            <el-button type="danger" icon="el-icon-delete" circle plain></el-button>
+            <el-button
+              @click="delArticle(scope.row.id)"
+              type="danger"
+              icon="el-icon-delete"
+              circle
+              plain
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -144,6 +150,28 @@ export default {
     this.getArticles();
   },
   methods: {
+    // 删除文章
+    delArticle(id) {
+      this.$confirm("此操作将永久删除该文章, 是否继续?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          // 点击确认，发删除请求
+          try {
+            // 测试账户的文章数据，后台限制不能删除
+            await this.$http.delete(`articles/${id}`);
+            this.$message.success("删除文章成功");
+            this.getArticles();
+          } catch (e) {
+            this.$message.error("删除文章失败");
+          }
+        })
+        .catch(() => {
+          // 点击取消，没有逻辑
+        });
+    },
     // 去编辑
     toEdit(id) {
       this.$router.push({ path: "/publish", query: { id } });
