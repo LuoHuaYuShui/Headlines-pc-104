@@ -52,11 +52,35 @@
       <!-- 表格 data绑定数组数据-->
       <el-table :data="articles">
         <!-- 列容器 -->
-        <el-table-column label="封面"></el-table-column>
-        <el-table-column label="标题" prop="title"></el-table-column>
-        <el-table-column label="状态"></el-table-column>
+        <el-table-column label="封面">
+          <!-- 作用域插槽 -->
+          <template slot-scope="scope">
+            <!-- 加载失败时的组件 -->
+            <el-image :src="scope.row.cover.images[0]" style="width:180px;height:120px">
+              <div slot="error" class="image-slot">
+                <img src="../../assets/error.gif" alt style="width:180px;height:120px" />
+              </div>
+            </el-image>
+          </template>
+        </el-table-column>
+        <el-table-column label="标题" prop="title" width="400px"></el-table-column>
+        <el-table-column label="状态">
+          <!-- Element 的 Tag标签 -->
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.status===0" type="info">草稿</el-tag>
+            <el-tag v-if="scope.row.status===1">待审核</el-tag>
+            <el-tag v-if="scope.row.status===2" type="success">审核通过</el-tag>
+            <el-tag v-if="scope.row.status===3" type="warning">审核失败</el-tag>
+            <el-tag v-if="scope.row.status===4" type="danger">已删除</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="发布时间" prop="pubdate"></el-table-column>
-        <el-table-column label="操作"></el-table-column>
+        <el-table-column label="操作" width="120px">
+          <template>
+            <el-button type="primary" icon="el-icon-edit" circle plain></el-button>
+            <el-button type="danger" icon="el-icon-delete" circle plain></el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <!-- 分页 -->
       <el-pagination style="margin-top:20px" background layout="prev, pager, next" :total="1000"></el-pagination>
