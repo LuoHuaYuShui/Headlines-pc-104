@@ -6,7 +6,7 @@
       </div>
       <!-- 按钮区域 -->
       <div class="btn-box">
-        <el-radio-group v-model="reqParams.collect" size="small">
+        <el-radio-group @change="toggleList()" v-model="reqParams.collect" size="small">
           <!-- label属性单个按钮的值，选中点击后，这个值会赋值给reqParams.collect -->
           <!-- 当el-radio-button组件中没有文字说明，label的值直接当做文字说明 -->
           <el-radio-button :label="false">全部</el-radio-button>
@@ -18,7 +18,7 @@
       <div class="list-box">
         <div class="item-box" v-for="item in images" :key="item.id">
           <img :src="item.url" alt />
-          <div class="option">
+          <div class="option" v-if="!reqParams.collect">
             <span class="el-icon-star-off" :class="{'red':item.is_collected}"></span>
             <span class="el-icon-delete"></span>
           </div>
@@ -59,6 +59,11 @@ export default {
     this.getImages();
   },
   methods: {
+    // 切换全部 和 收藏
+    toggleList() {
+      this.reqParams.page = 1;
+      this.getImages();
+    },
     // 切换分页
     changePage(newPage) {
       this.reqParams.page = newPage;
