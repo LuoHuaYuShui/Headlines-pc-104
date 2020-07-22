@@ -19,7 +19,12 @@
         <div class="item-box" v-for="item in images" :key="item.id">
           <img :src="item.url" alt />
           <div class="option" v-if="!reqParams.collect">
-            <span class="el-icon-star-off" :class="{'red':item.is_collected}"></span>
+            <!-- item 中既有图片的id 也有图片的状态 -->
+            <span
+              @click="toggleStatus(item)"
+              class="el-icon-star-off"
+              :class="{'red':item.is_collected}"
+            ></span>
             <span class="el-icon-delete" @click="delImage(item.id)"></span>
           </div>
         </div>
@@ -59,6 +64,25 @@ export default {
     this.getImages();
   },
   methods: {
+    // 进行（添加）收藏 || 取消收藏
+    async toggleStatus(item) {
+      // 修改后的状态
+      const updatedStatus = !item.is_collected;
+      try {
+        // 发送请求
+        await this.$http.put(`user/images/${item.id}`, {
+          // 和当前图片状态取反即可
+          collect: updatedStatus
+        });
+        // 成功提示
+        this.$message.success(updatedStatus ? "添加收藏成功" : "取消收藏成功");
+        // 根据修改后的状态 去修改图片数据对应的状态is_collected
+        item.is_collected = updatedStatus;
+      } catch (e) {
+        // 失败提示
+        this.$message.success(updatedStatus ? "添加收藏失败" : "取消收藏失败");
+      }
+    },
     // 删除素材
     delImage(id) {
       // 确认框
