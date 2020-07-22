@@ -11,6 +11,7 @@ import Layout from '@/views/Layout'
 import Welcome from '@/views/welcome'
 import NotFound from '@/views/404'
 import Article from '@/views/article'
+import Image from '@/views/image'
 
 Vue.use(VueRouter);
 
@@ -29,7 +30,9 @@ const routes = [
                 path: '/', component: Welcome
             },
             // 内容管理
-            { path: '/article', component: Article }
+            { path: '/article', component: Article },
+            // 素材管理
+            { path: '/image', component: Image }
         ]
     },
     // 通配规则，404组件
