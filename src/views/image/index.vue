@@ -12,7 +12,7 @@
           <el-radio-button :label="false">全部</el-radio-button>
           <el-radio-button :label="true">收藏</el-radio-button>
         </el-radio-group>
-        <el-button style="float:right" type="success" size="small">添加素材</el-button>
+        <el-button @click="openDialog()" style="float:right" type="success" size="small">添加素材</el-button>
       </div>
       <!-- 列表区域 -->
       <div class="list-box">
@@ -39,6 +39,18 @@
         @current-change="changePage"
       ></el-pagination>
     </el-card>
+    <!-- 对话框 -->
+    <el-dialog title="上传素材呦" :visible.sync="dialogVisible" width="300px">
+      <!-- 上传组件 -->
+      <el-upload
+        class="avatar-uploader"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+      >
+        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,13 +69,22 @@ export default {
       // 素材列表
       images: [],
       // 总条数
-      total: 0
+      total: 0,
+      // 控制对话框显示隐藏
+      dialogVisible: false,
+      // 预览图地址
+      imageUrl: null
     };
   },
   created() {
     this.getImages();
   },
   methods: {
+    // 打开对话框
+    openDialog() {
+      // 数据驱动视图
+      this.dialogVisible = true;
+    },
     // 进行（添加）收藏 || 取消收藏
     async toggleStatus(item) {
       // 修改后的状态
@@ -130,6 +151,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+// 列表样式
 .list-box {
   margin-top: 20px;
   .item-box {

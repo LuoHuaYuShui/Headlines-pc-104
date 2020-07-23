@@ -9,6 +9,9 @@ import router from '@/router'
 // 导入自己配置的axios,并挂载
 import axios from '@/api'
 
+// 导入自己的全局样式
+import '@/styles/index.less'
+
 // 导入自己的插件
 import myPlugin from '@/utils/plugin'
 Vue.use(myPlugin);
