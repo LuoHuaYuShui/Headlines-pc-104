@@ -44,7 +44,10 @@
       <!-- 上传组件 -->
       <el-upload
         class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+        name="image"
+        :headers="headers"
+        :on-success="uploadSuccess"
         :show-file-list="false"
       >
         <img v-if="imageUrl" :src="imageUrl" class="avatar" />
@@ -55,10 +58,14 @@
 </template>
 
 <script>
+// auth 这个模块 在JS中才能使用
+import auth from "@/utils/auth";
 export default {
   name: "page-image",
   data() {
     return {
+      // 上传的请求头对象
+      headers: { Authorization: `Bearer ${auth.getUser().token}` },
       // 查询条件
       reqParams: {
         // 是否为收藏：true 表示收藏图片  false 表示全部图片
@@ -80,10 +87,24 @@ export default {
     this.getImages();
   },
   methods: {
+    // 上传成功 response 是上传成功后 后台返回的数据
+    uploadSuccess(response) {
+      // 提示 和 预览
+      this.$message.success("上传素材成功");
+      this.imageUrl = response.data.url;
+
+      // 3秒后 关闭对话框 并且 更新列表
+      window.setInterval(() => {
+        this.dialogVisible = false;
+        this.getImages();
+      }, 3000);
+    },
     // 打开对话框
     openDialog() {
       // 数据驱动视图
       this.dialogVisible = true;
+      // 第二次打开，清空预览图
+      this.imageUrl = null;
     },
     // 进行（添加）收藏 || 取消收藏
     async toggleStatus(item) {
